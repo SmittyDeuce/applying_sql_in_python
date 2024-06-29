@@ -52,7 +52,7 @@ def add_member(name, age, trainer_id):
             if conn:
                 conn.close()
 
-# Example usage
+
 # add_member('John Doe', 30, 1)
 
 
@@ -131,7 +131,7 @@ def update_member_age(member_id, new_age):
                 conn.close()
 
 
-# update_member_age(2, 55)  # Update member with ID 1 to age 35
+# update_member_age(2, 55)
 
 def delete_workout_session(session_id):
     conn = connect_database()
@@ -164,5 +164,36 @@ def delete_workout_session(session_id):
             if conn:
                 conn.close()
 
-# Example usage
-delete_workout_session(1)  # Replace with a valid session ID
+
+# delete_workout_session(1)
+
+def get_members_in_age_range(start_age, end_age):
+    conn = connect_database()
+    
+    if conn is not None:
+        try:
+            cursor = conn.cursor()
+
+            # SQL query to retrieve members within the age range
+            select_query = """
+            SELECT id, name, age, trainer_id 
+            FROM members 
+            WHERE age BETWEEN %s AND %s
+            """
+            cursor.execute(select_query, (start_age, end_age))
+            results = cursor.fetchall()
+
+            for row in results:
+                print(f"ID: {row[0]}, Name: {row[1]}, Age: {row[2]}, Trainer ID: {row[3]}")
+
+        except mysql.connector.Error as e:
+            print(f"Error retrieving members: {e}")
+
+        finally:
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
+
+
+get_members_in_age_range(25, 30)

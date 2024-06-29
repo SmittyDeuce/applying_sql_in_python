@@ -7,4 +7,6 @@ CREATE TABLE if not exists members (
     foreign key (trainer_id) references trainers (id)
 );
 
+USE gym_db;
+
 SELECT * from members;
